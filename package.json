@@ -1,6 +1,6 @@
 {
   "name": "half",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Project scaffolder and atomic task manager for AI-assisted development",
   "type": "module",
   "license": "MIT",
