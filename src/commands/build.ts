@@ -1,14 +1,10 @@
 import { resolve } from 'node:path';
-import { write, writeln, A, box, stripAnsi } from '../wizard/ansi.js';
-import { renderZen, type ZenMood } from '../wizard/zen.js';
+import { writeln, A } from '../wizard/ansi.js';
 import { askText, selectMenu, confirm } from '../wizard/prompt.js';
 import { scaffold } from '../scaffold/scaffold.js';
 import type { BackendFlavor, FrontendFlavor, DbFlavor } from '../core/types.js';
 
 /* ── layout helpers ── */
-const COL_ZEN   = 44;   // left edge of zen panel
-const ZEN_WIDTH = 20;
-
 function header() {
   writeln(`\n  ${A.orange}${A.bold}½ half build${A.reset}  ${A.muted}— project wizard${A.reset}\n`);
   writeln(`  ${A.muted}${'─'.repeat(38)}${A.reset}\n`);
@@ -16,14 +12,6 @@ function header() {
 
 function stepLabel(n: number, total: number, title: string) {
   writeln(`  ${A.muted}step ${n}/${total}${A.reset}  ${A.bold}${A.white}${title}${A.reset}\n`);
-}
-
-function printZen(mood: ZenMood, quoteIdx = 0) {
-  const rows = renderZen(mood, quoteIdx);
-  // print zen block flush to right, preceded by blank line
-  writeln();
-  rows.forEach(r => writeln(`  ${r}`));
-  writeln();
 }
 
 function summaryLine(label: string, value: string | boolean | null, color = A.orange) {
@@ -42,7 +30,6 @@ export async function runBuildCommand(): Promise<void> {
   header();
 
   // ── Step 1: name ────────────────────────────
-  printZen('idle', 0);
   stepLabel(1, 6, 'Project name');
   const name = await askText('Name your project', 'my-app');
 
@@ -53,7 +40,6 @@ export async function runBuildCommand(): Promise<void> {
 
   // ── Step 2: backend ─────────────────────────
   writeln();
-  printZen('think', 0);
   stepLabel(2, 6, 'Backend');
   const backend = await selectMenu<BackendFlavor | null>('Choose a backend', [
     { value: 'go',     label: 'Go',     hint: 'Chi router · pgx · zero deps' },
@@ -64,7 +50,6 @@ export async function runBuildCommand(): Promise<void> {
 
   // ── Step 3: frontend ────────────────────────
   writeln();
-  printZen('think', 1);
   stepLabel(3, 6, 'Frontend');
   const frontend = await selectMenu<FrontendFlavor | null>('Choose a frontend', [
     { value: 'nextjs',     label: 'Next.js',     hint: 'React 19 · App Router' },
@@ -76,8 +61,6 @@ export async function runBuildCommand(): Promise<void> {
 
   // ── Step 4: database ────────────────────────
   writeln();
-  const mood4: ZenMood = (backend === 'go' && frontend !== null) ? 'wow' : 'think';
-  printZen(mood4, 0);
   stepLabel(4, 6, 'Database');
   const db = await selectMenu<DbFlavor | null>('Choose a database', [
     { value: 'postgres', label: 'PostgreSQL', hint: 'pgx v5 · migrations included' },
@@ -88,7 +71,6 @@ export async function runBuildCommand(): Promise<void> {
 
   // ── Step 5: docker + qa ─────────────────────
   writeln();
-  printZen('happy', 0);
   stepLabel(5, 6, 'Extras');
   const docker = db !== null
     ? await confirm('Add Docker Compose + Makefile?', true)
@@ -107,7 +89,6 @@ export async function runBuildCommand(): Promise<void> {
   summaryLine('qa',       qa);
   writeln(`  ${A.muted}${'─'.repeat(38)}${A.reset}\n`);
 
-  printZen('warn', 0);
   const go = await confirm(`Scaffold "${name}" now?`, true);
 
   if (!go) {
@@ -118,7 +99,6 @@ export async function runBuildCommand(): Promise<void> {
   // ── Scaffold ─────────────────────────────────
   process.stdout.write(A.clearScreen);
   header();
-  printZen('done', 0);
   writeln(`  ${A.orange}Building ${A.bold}${name}${A.reset}${A.orange}...${A.reset}\n`);
 
   await scaffold({
