@@ -12,5 +12,7 @@
   { "id": "f-011", "name": "oss-release",      "title": "Open source prep — LICENSE, docs, CHANGELOG", "status": "done" },
   { "id": "f-012", "name": "mysql-sqlite",     "title": "MySQL and SQLite template layers",       "status": "pending" },
   { "id": "f-013", "name": "half-init",        "title": "half init — add half to existing project", "status": "pending" },
-  { "id": "f-014", "name": "half-version",     "title": "half --version flag",                    "status": "pending" }
+  { "id": "f-014", "name": "half-version",     "title": "half --version flag",                    "status": "pending" },
+  { "id": "f-015", "name": "mcp-server",       "title": "half mcp — MCP stdio server for Claude Code", "status": "done" },
+  { "id": "f-016", "name": "test-suite",       "title": "Unit + e2e tests for MCP server",        "status": "done" }
 ]

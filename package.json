@@ -44,10 +44,10 @@
     "build": "tsc && node scripts/copy-templates.mjs",
     "dev": "tsx src/cli.ts",
     "typecheck": "tsc --noEmit",
-    "test": "npm run build && node --test dist/core/args.test.js dist/scaffold/token-replacer.test.js dist/task/task-id.test.js dist/task/task-store.test.js dist/e2e/cli.test.js",
-    "test:unit": "npm run build && node --test dist/core/args.test.js dist/scaffold/token-replacer.test.js dist/task/task-id.test.js dist/task/task-store.test.js",
-    "test:e2e": "npm run build && node --test dist/e2e/cli.test.js",
-    "test:watch": "node --import tsx/esm --test --watch src/core/args.test.ts src/scaffold/token-replacer.test.ts src/task/task-id.test.ts src/task/task-store.test.ts",
+    "test": "npm run build && node --test dist/core/args.test.js dist/scaffold/token-replacer.test.js dist/task/task-id.test.js dist/task/task-store.test.js dist/mcp/server.test.js dist/mcp/tools.test.js dist/e2e/cli.test.js dist/e2e/mcp.test.js",
+    "test:unit": "npm run build && node --test dist/core/args.test.js dist/scaffold/token-replacer.test.js dist/task/task-id.test.js dist/task/task-store.test.js dist/mcp/server.test.js dist/mcp/tools.test.js",
+    "test:e2e": "npm run build && node --test dist/e2e/cli.test.js dist/e2e/mcp.test.js",
+    "test:watch": "node --import tsx/esm --test --watch src/core/args.test.ts src/scaffold/token-replacer.test.ts src/task/task-id.test.ts src/task/task-store.test.ts src/mcp/server.test.ts src/mcp/tools.test.ts",
     "prepublishOnly": "npm run test"
   },
   "devDependencies": {
