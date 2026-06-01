@@ -1,0 +1,16 @@
+.PHONY: up down logs db shell
+
+up:
+	docker compose up -d
+
+down:
+	docker compose down
+
+logs:
+	docker compose logs -f
+
+db:
+	docker compose exec db psql -U [[HALF:PROJECT_NAME_SNAKE]] -d [[HALF:PROJECT_NAME_SNAKE]]
+
+shell:
+	docker compose exec api sh

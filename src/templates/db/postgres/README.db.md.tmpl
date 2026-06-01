@@ -1,0 +1,14 @@
+# Database — PostgreSQL
+
+Run after scaffold:
+```bash
+go get github.com/jackc/pgx/v5
+```
+
+Start database:
+```bash
+make up          # docker compose up -d
+make db          # psql shell
+```
+
+Connection is in `internal/db/db.go`. Configure via `.env` (copy from `.env.example`).

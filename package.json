@@ -1,0 +1,57 @@
+{
+  "name": "half",
+  "version": "0.1.0",
+  "description": "Project scaffolder and atomic task manager for AI-assisted development",
+  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "Luis Cifuentes",
+    "url": "https://github.com/XterraEngine-dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/XterraEngine-dev/half.git"
+  },
+  "homepage": "https://github.com/XterraEngine-dev/half#readme",
+  "bugs": {
+    "url": "https://github.com/XterraEngine-dev/half/issues"
+  },
+  "keywords": [
+    "scaffolding",
+    "cli",
+    "task-manager",
+    "ai-agent",
+    "claude",
+    "developer-tools",
+    "code-generator",
+    "harness"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "bin": {
+    "half": "./bin/half.js"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "README.md",
+    "README.es.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc && node scripts/copy-templates.mjs",
+    "dev": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test dist/core/args.test.js dist/scaffold/token-replacer.test.js dist/task/task-id.test.js dist/task/task-store.test.js dist/e2e/cli.test.js",
+    "test:unit": "npm run build && node --test dist/core/args.test.js dist/scaffold/token-replacer.test.js dist/task/task-id.test.js dist/task/task-store.test.js",
+    "test:e2e": "npm run build && node --test dist/e2e/cli.test.js",
+    "test:watch": "node --import tsx/esm --test --watch src/core/args.test.ts src/scaffold/token-replacer.test.ts src/task/task-id.test.ts src/task/task-store.test.ts",
+    "prepublishOnly": "npm run test"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

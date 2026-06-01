@@ -1,0 +1,41 @@
+name: Bug report
+description: Something is broken
+labels: ["bug"]
+body:
+  - type: input
+    id: command
+    attributes:
+      label: Command that failed
+      placeholder: "half new my-app --backend go --frontend vue"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior (include full error output)
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: half version
+      placeholder: "half --version or npm list -g half"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: OS + Node version
+      placeholder: "macOS 14.5, Node 22.1"
+    validations:
+      required: true

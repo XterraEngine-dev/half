@@ -1,0 +1,37 @@
+name: Feature request
+description: New template, command, or behaviour
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of change
+      options:
+        - New template layer (backend/frontend/db)
+        - New CLI flag or command
+        - Watch UI improvement
+        - Agent workflow improvement
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      placeholder: "When I do X, I have to manually Y which is slow because..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      placeholder: "Add --flag that generates Z file in the scaffold layer"
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered

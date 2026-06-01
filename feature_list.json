@@ -1,0 +1,16 @@
+[
+  { "id": "f-001", "name": "core-types",       "title": "Core types and interfaces",              "status": "done" },
+  { "id": "f-002", "name": "core-args",        "title": "Argv parser",                            "status": "done" },
+  { "id": "f-003", "name": "core-io",          "title": "File I/O helpers + file locking",        "status": "done" },
+  { "id": "f-004", "name": "task-system",      "title": "Task CRUD + display",                    "status": "done" },
+  { "id": "f-005", "name": "scaffold-system",  "title": "Template scaffold system",               "status": "done" },
+  { "id": "f-006", "name": "templates-core",   "title": "Core project templates",                 "status": "done" },
+  { "id": "f-007", "name": "build-tooling",    "title": "Build and bin setup",                    "status": "done" },
+  { "id": "f-008", "name": "db-docker-layers", "title": "--db and --docker scaffold layers",      "status": "done" },
+  { "id": "f-009", "name": "harness-viewer",   "title": "half watch — live kanban + SSE",         "status": "done" },
+  { "id": "f-010", "name": "file-activity",    "title": "File activity bar in watch viewer",      "status": "done" },
+  { "id": "f-011", "name": "oss-release",      "title": "Open source prep — LICENSE, docs, CHANGELOG", "status": "done" },
+  { "id": "f-012", "name": "mysql-sqlite",     "title": "MySQL and SQLite template layers",       "status": "pending" },
+  { "id": "f-013", "name": "half-init",        "title": "half init — add half to existing project", "status": "pending" },
+  { "id": "f-014", "name": "half-version",     "title": "half --version flag",                    "status": "pending" }
+]

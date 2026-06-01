@@ -1,0 +1,36 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: db
+      DB_PORT: [[HALF:DB_PORT]]
+      DB_USER: [[HALF:PROJECT_NAME_SNAKE]]
+      DB_PASS: secret
+      DB_NAME: [[HALF:PROJECT_NAME_SNAKE]]
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: [[HALF:DB_IMAGE]]
+    environment:
+      POSTGRES_USER: [[HALF:PROJECT_NAME_SNAKE]]
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: [[HALF:PROJECT_NAME_SNAKE]]
+    ports:
+      - "[[HALF:DB_PORT]]:[[HALF:DB_PORT]]"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U [[HALF:PROJECT_NAME_SNAKE]]"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  db_data:

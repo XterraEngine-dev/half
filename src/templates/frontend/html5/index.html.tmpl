@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[[HALF:PROJECT_NAME_PASCAL]]</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; padding: 2rem; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; color: #f8fafc; }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1rem; }
+    .form-row { display: flex; gap: 0.75rem; margin-bottom: 1rem; }
+    input[type="text"] {
+      flex: 1; padding: 0.5rem 0.75rem; background: #0f172a; border: 1px solid #475569;
+      border-radius: 0.5rem; color: #e2e8f0; font-size: 0.9rem; outline: none;
+    }
+    input[type="text"]:focus { border-color: #6366f1; }
+    button {
+      padding: 0.5rem 1rem; border: none; border-radius: 0.5rem; cursor: pointer;
+      font-size: 0.85rem; font-weight: 600; transition: opacity 0.15s;
+    }
+    button:hover { opacity: 0.85; }
+    .btn-add    { background: #6366f1; color: #fff; }
+    .btn-edit   { background: #0891b2; color: #fff; padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+    .btn-delete { background: #dc2626; color: #fff; padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+    .btn-save   { background: #16a34a; color: #fff; padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+    #list { list-style: none; }
+    #list li {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.6rem 0; border-bottom: 1px solid #1e293b;
+    }
+    #list li:last-child { border-bottom: none; }
+    .item-name { flex: 1; }
+    .item-edit-input {
+      flex: 1; padding: 0.25rem 0.5rem; background: #0f172a;
+      border: 1px solid #6366f1; border-radius: 0.4rem; color: #e2e8f0; font-size: 0.9rem;
+    }
+    .status { font-size: 0.75rem; color: #64748b; }
+    #status-bar { margin-top: 1rem; font-size: 0.8rem; color: #64748b; min-height: 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>[[HALF:PROJECT_NAME_PASCAL]] — Items</h1>
+
+  <div class="card">
+    <div class="form-row">
+      <input type="text" id="new-name" placeholder="Item name…" />
+      <button class="btn-add" onclick="createItem()">Add</button>
+    </div>
+    <ul id="list"></ul>
+    <div id="status-bar"></div>
+  </div>
+
+  <script>
+    const API = 'http://localhost:8080';
+
+    async function apiFetch(path, opts = {}) {
+      const res = await fetch(API + path, {
+        headers: { 'Content-Type': 'application/json' },
+        ...opts,
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return res.status === 204 ? null : res.json();
+    }
+
+    function status(msg) {
+      document.getElementById('status-bar').textContent = msg;
+      setTimeout(() => document.getElementById('status-bar').textContent = '', 2000);
+    }
+
+    async function loadItems() {
+      const items = await apiFetch('/items');
+      const ul = document.getElementById('list');
+      ul.innerHTML = '';
+      for (const item of items) {
+        ul.appendChild(renderItem(item));
+      }
+    }
+
+    function renderItem(item) {
+      const li = document.createElement('li');
+      li.dataset.id = item.id;
+      li.innerHTML = `
+        <span class="item-name">${escHtml(item.name)}</span>
+        <button class="btn-edit" onclick="startEdit('${item.id}', '${escAttr(item.name)}')">Edit</button>
+        <button class="btn-delete" onclick="deleteItem('${item.id}')">Delete</button>
+      `;
+      return li;
+    }
+
+    function startEdit(id, name) {
+      const li = document.querySelector(`li[data-id="${id}"]`);
+      li.innerHTML = `
+        <input class="item-edit-input" value="${escAttr(name)}" id="edit-${id}" />
+        <button class="btn-save" onclick="saveEdit('${id}')">Save</button>
+        <button class="btn-delete" onclick="deleteItem('${id}')">Delete</button>
+      `;
+      document.getElementById(`edit-${id}`).focus();
+    }
+
+    async function saveEdit(id) {
+      const input = document.getElementById(`edit-${id}`);
+      await apiFetch(`/items/${id}`, { method: 'PUT', body: JSON.stringify({ name: input.value }) });
+      status('Saved');
+      loadItems();
+    }
+
+    async function createItem() {
+      const input = document.getElementById('new-name');
+      const name = input.value.trim();
+      if (!name) return;
+      await apiFetch('/items', { method: 'POST', body: JSON.stringify({ name }) });
+      input.value = '';
+      status('Created');
+      loadItems();
+    }
+
+    async function deleteItem(id) {
+      await apiFetch(`/items/${id}`, { method: 'DELETE' });
+      status('Deleted');
+      loadItems();
+    }
+
+    function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function escAttr(s) { return s.replace(/"/g,'&quot;'); }
+
+    document.getElementById('new-name').addEventListener('keydown', e => {
+      if (e.key === 'Enter') createItem();
+    });
+
+    loadItems();
+  </script>
+</body>
+</html>
