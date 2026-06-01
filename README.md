@@ -151,6 +151,33 @@ half log "Blocked: missing schema definition" --type agent.log
 4. Agent runs `half task done <id>`
 5. Panel updates live via SSE
 
+### Tracking prompt for Claude Code
+
+Copy this block into your project's `CLAUDE.md` (or paste it as a system prompt) to enable full `half` tracking:
+
+```
+## Task tracking — half
+
+### Before starting any session
+1. Run: half task list --status in_progress
+2. If a task is active, continue it. If none: half task pick
+3. Read only files directly relevant to the active task.
+
+### During work
+- Log key actions: half log "<what you're doing>"
+- If blocked: half task block <id> — include the reason in your response.
+
+### When the task is complete
+1. Run: half task done <id>
+2. Final response must be a single line: done → <id>
+
+### Hard rules
+- Implement exactly what `description` says. Nothing more.
+- No refactoring, architecture changes, or dependency changes outside scope.
+- Do not mark done until the feature is fully working.
+- One task per session. If no task is available, stop and report.
+```
+
 ### CLAUDE.md
 
 Every scaffolded project includes a `CLAUDE.md` that constrains the agent:
