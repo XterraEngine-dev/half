@@ -5,6 +5,7 @@ import { runPromptCommand } from './commands/prompt.js';
 import { runTaskCommand } from './commands/task.js';
 import { runWatchCommand } from './commands/watch.js';
 import { runMcpCommand } from './commands/mcp.js';
+import { runInitCommand } from './commands/init.js';
 import { appendEvent } from './watch/event-log.js';
 import { resolve } from 'node:path';
 
@@ -23,6 +24,7 @@ Commands:
   half task pick [--assignee <name>] [--tag <tag>]
   half task progress <id> <0-100>
   half watch [--port 4747]
+  half init mcp                 configure Claude Code MCP integration in current project
   half mcp                      start MCP stdio server (for Claude Code integration)
   half log <message> [--type agent.start|agent.stop|agent.log]
   half prompt [claude|raw]     print agent system prompt
@@ -59,6 +61,11 @@ async function main(): Promise<void> {
   if (args.command === 'prompt') {
     const target = (args.subcommand ?? 'generic') as 'claude' | 'generic' | 'raw';
     await runPromptCommand(target);
+    return;
+  }
+
+  if (args.command === 'init') {
+    await runInitCommand(args.subcommand);
     return;
   }
 
