@@ -7,10 +7,6 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) · Versioning: 
 
 ## [Unreleased]
 
-### Added
-
-- **Buck — pixel-art beaver mascot** (`src/wizard/zen.ts`). Animated terminal sprite: 10-pixel-wide block-art body, round head with round ears, large dark nose, cream muzzle, two white buck teeth (chomp animation), raised paws, crosshatch flat tail with shimmer. Colors match the half terracotta palette. 16-frame animation at 120 ms/frame via `playBuckIntro()`. Not wired to `half build` yet — pending final design sign-off.
-
 ---
 
 ## [0.1.1] — 2026-05-31
