@@ -1,24 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 48" width="180" height="48">
-  <!-- bg -->
-  <rect width="180" height="48" rx="10" fill="#1c1917"/>
-
-  <!-- icon mark (36x36 centered in 48h) -->
-  <g transform="translate(7, 6)">
-    <!-- left half solid -->
-    <path d="M0 8 C0 3.582 3.582 0 8 0 L18 0 L18 36 L8 36 C3.582 36 0 32.418 0 28 Z"
-          fill="#d97757"/>
-    <!-- right half outline -->
-    <path d="M18 0 L28 0 C32.418 0 36 3.582 36 8 L36 28 C36 32.418 32.418 36 28 36 L18 36 Z"
-          fill="none" stroke="#d97757" stroke-width="2" stroke-linejoin="round"/>
-    <!-- divider -->
-    <line x1="18" y1="0" x2="18" y2="36" stroke="#1c1917" stroke-width="1.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" width="200" height="48">
+  <rect width="200" height="48" rx="8" fill="#120f0d"/>
+  <!-- icon mark, 32x32 centered vertically -->
+  <g transform="translate(8,8)">
+    <path d="M0 24 C0 28.418 3.582 32 8 32 L16 32 L16 0 L8 0 C3.582 0 0 3.582 0 8 Z" fill="#e9e3d8"/>
+    <path d="M16 0 L24 0 C28.418 0 32 3.582 32 8 L32 24 C32 28.418 28.418 32 24 32 L16 32 Z" fill="none" stroke="#e9e3d8" stroke-width="1.5"/>
+    <line x1="16" y1="0" x2="16" y2="32" stroke="#120f0d" stroke-width="1.2"/>
   </g>
-
   <!-- wordmark -->
-  <text x="56" y="31"
-        font-family="'SF Pro Display','Inter','Segoe UI',system-ui,sans-serif"
-        font-size="20"
-        font-weight="600"
-        letter-spacing="-0.5"
-        fill="#f0ebe4">half</text>
+  <text x="52" y="33"
+    font-family="'IBM Plex Serif',Georgia,serif"
+    font-size="22" font-weight="600"
+    letter-spacing="-.4"
+    fill="#e9e3d8">half</text>
 </svg>

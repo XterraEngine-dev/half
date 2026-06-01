@@ -16,16 +16,21 @@ export const A = {
   fg: (n: number) => `\x1b[38;5;${n}m`,
   bg: (n: number) => `\x1b[48;5;${n}m`,
 
-  // named colours (approximate)
-  orange:    '\x1b[38;5;173m',
-  orangeDim: '\x1b[38;5;130m',
-  white:     '\x1b[38;5;253m',
-  cream:     '\x1b[38;5;230m',
-  muted:     '\x1b[38;5;240m',
-  green:     '\x1b[38;5;114m',
-  cyan:      '\x1b[38;5;116m',
-  red:       '\x1b[38;5;167m',
-  yellow:    '\x1b[38;5;221m',
+  // half design system — IBM Plex palette in terminal approx
+  terra:  '\x1b[38;5;173m',   // #d97455 terracota — acento activo
+  terraDim:'\x1b[38;5;130m',  // #a8553d
+  bone:   '\x1b[38;5;230m',   // #e9e3d8 hueso — tinta primaria
+  bone2:  '\x1b[38;5;187m',   // #bdb6a8
+  muted:  '\x1b[38;5;243m',   // #7c7367 piedra
+  faint:  '\x1b[38;5;238m',   // #4f483f
+  green:  '\x1b[38;5;108m',   // #74b089 done
+  red:    '\x1b[38;5;167m',   // #c4604d blocked
+  white:  '\x1b[38;5;230m',
+  cream:  '\x1b[38;5;230m',
+  // aliases for backwards compat
+  orange: '\x1b[38;5;173m',
+  yellow: '\x1b[38;5;173m',
+  cyan:   '\x1b[38;5;187m',
 };
 
 export function write(s: string): void { process.stdout.write(s); }
