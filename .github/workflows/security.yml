@@ -1,0 +1,76 @@
+name: security
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  schedule:
+    - cron: '0 6 * * 1'   # weekly Monday 06:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  sast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Semgrep (multi-language SAST)
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: p/default p/security-audit p/secrets
+
+  sca:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect stack
+        id: stack
+        run: |
+          [ -f go.mod ] && echo "go=true" >> "$GITHUB_OUTPUT" || true
+          [ -f package.json ] && echo "node=true" >> "$GITHUB_OUTPUT" || true
+      - if: steps.stack.outputs.go == 'true'
+        uses: actions/setup-go@v5
+        with: { go-version: 'stable' }
+      - if: steps.stack.outputs.go == 'true'
+        name: govulncheck
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          "$(go env GOPATH)/bin/govulncheck" ./...
+      - if: steps.stack.outputs.node == 'true'
+        uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - if: steps.stack.outputs.node == 'true'
+        name: npm audit
+        run: npm audit --audit-level=high
+
+  sbom-and-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate SBOM (syft)
+        uses: anchore/sbom-action@v0
+        with:
+          format: spdx-json
+          output-file: sbom.spdx.json
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.spdx.json
+      - name: Filesystem vuln scan (trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          severity: 'HIGH,CRITICAL'
+          exit-code: '1'
+          ignore-unfixed: true

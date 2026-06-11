@@ -1,0 +1,9 @@
+# Code ownership — every PR requires review from an owner (separation of duties).
+# Replace @XterraEngine-dev with your GitHub team/user. Enables required-reviewer enforcement.
+*                 @XterraEngine-dev
+
+# Security-sensitive paths warrant explicit owners:
+/.github/         @XterraEngine-dev
+/audit.sh         @XterraEngine-dev
+/SECURITY.md      @XterraEngine-dev
+/docs/THREAT_MODEL.md  @XterraEngine-dev
