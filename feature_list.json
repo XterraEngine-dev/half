@@ -14,5 +14,6 @@
   { "id": "f-013", "name": "half-init",        "title": "half init — add half to existing project", "status": "done" },
   { "id": "f-014", "name": "half-version",     "title": "half --version flag",                    "status": "pending" },
   { "id": "f-015", "name": "mcp-server",       "title": "half mcp — MCP stdio server for Claude Code", "status": "done" },
-  { "id": "f-016", "name": "test-suite",       "title": "Unit + e2e tests for MCP server",        "status": "done" }
+  { "id": "f-016", "name": "test-suite",       "title": "Unit + e2e tests for MCP server",        "status": "done" },
+  { "id": "f-017", "name": "standards",        "title": "half standards — scaffold + enforce eng standards (intermediate)", "status": "done" }
 ]

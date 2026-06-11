@@ -1,0 +1,56 @@
+name: ci
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect stack
+        id: stack
+        run: |
+          [ -f go.mod ] && echo "go=true" >> "$GITHUB_OUTPUT" || true
+          [ -f package.json ] && echo "node=true" >> "$GITHUB_OUTPUT" || true
+          { [ -f pyproject.toml ] || [ -f requirements.txt ]; } && echo "py=true" >> "$GITHUB_OUTPUT" || true
+
+      # ── Go ──────────────────────────────────────
+      - if: steps.stack.outputs.go == 'true'
+        uses: actions/setup-go@v5
+        with: { go-version: 'stable' }
+      - if: steps.stack.outputs.go == 'true'
+        name: Go quality + tests
+        run: |
+          test -z "$(gofmt -l .)" || { echo 'gofmt: files need formatting'; gofmt -l .; exit 1; }
+          go vet ./...
+          go test ./... -coverprofile=cover.out
+          go tool cover -func=cover.out | tail -1
+
+      # ── Node ────────────────────────────────────
+      - if: steps.stack.outputs.node == 'true'
+        uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - if: steps.stack.outputs.node == 'true'
+        name: Node quality + tests
+        run: |
+          npm ci || npm install
+          npm run lint --if-present
+          npm run typecheck --if-present
+          npm test --if-present
+
+      # ── Python ──────────────────────────────────
+      - if: steps.stack.outputs.py == 'true'
+        uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - if: steps.stack.outputs.py == 'true'
+        name: Python quality + tests
+        run: |
+          python -m pip install --upgrade pip ruff pytest
+          ruff check .
+          pytest -q
