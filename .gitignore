@@ -6,3 +6,6 @@ dist/
 .DS_Store
 .half/tasks.lock
 coverage/
+
+# local machine-specific MCP config (absolute paths)
+.mcp.json
