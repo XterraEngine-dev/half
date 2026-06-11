@@ -1,0 +1,44 @@
+# OWASP ASVS Level 2 — baseline checklist — half
+
+> L2 is the recommended default for any app handling sensitive data.
+> Full standard: https://owasp.org/www-project-application-security-verification-standard/
+> This is the working subset; tick as verified, link evidence (test/PR).
+
+## V2 Authentication
+- [ ] Passwords hashed with bcrypt/argon2 (never reversible).
+- [ ] MFA available; enforced for privileged roles.
+- [ ] Credential brute-force defended (rate limit + lockout).
+- [ ] Session tokens are high-entropy, hashed at rest, rotated on login.
+
+## V3 Session management
+- [ ] Cookies: HttpOnly, Secure, SameSite.
+- [ ] Sessions expire and can be revoked server-side.
+
+## V4 Access control
+- [ ] Enforced server-side on every request (deny by default).
+- [ ] Multi-tenant isolation enforced at the data layer.
+- [ ] No privilege escalation above the actor's own grants.
+
+## V5 Validation, sanitization, encoding
+- [ ] All input validated server-side (type, length, format).
+- [ ] Output encoded for context (no XSS).
+- [ ] File uploads validated by allowlist; dangerous types rejected.
+
+## V6 Cryptography
+- [ ] Secrets at rest encrypted (AES-GCM or KMS).
+- [ ] TLS enforced in transit; no weak ciphers.
+- [ ] No secrets in code or logs.
+
+## V7 Error handling & logging
+- [ ] Generic errors to clients; details server-side only.
+- [ ] Security events audit-logged with actor, IP, UA, timestamp.
+
+## V8 Data protection
+- [ ] PII minimized; retention + erasure path defined.
+
+## V12 Files & resources
+- [ ] Upload size limits; content-type/extension allowlist.
+
+## V13 API
+- [ ] CSRF defended on state-changing requests.
+- [ ] Rate limiting on sensitive endpoints.

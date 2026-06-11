@@ -1,0 +1,35 @@
+# Threat model — half
+
+> Keep current. Update when trust boundaries change. Reviewed each release.
+> Method: STRIDE per data-flow across trust boundaries.
+
+## 1. System overview
+_One paragraph: what the system does, who uses it, what data it holds._
+
+## 2. Assets
+- [ ] Credentials / session tokens
+- [ ] Customer PII
+- [ ] Secrets / signing keys
+- [ ] Business data (tenant-scoped)
+
+## 3. Trust boundaries
+- Internet ↔ edge/reverse proxy
+- Edge ↔ application
+- Application ↔ database
+- Application ↔ third-party services
+
+## 4. STRIDE per boundary
+| Threat | Vector | Mitigation | Status |
+|--------|--------|------------|--------|
+| **S**poofing | Stolen session / weak auth | MFA, signed/HttpOnly cookies, rate limit | |
+| **T**ampering | Param/SQL injection | Parameterized queries, input validation | |
+| **R**epudiation | No audit trail | Append-only audit log w/ IP+UA | |
+| **I**nfo disclosure | Secrets in logs / plaintext at rest | Vault, redaction, AES-GCM at rest, TLS | |
+| **D**enial of service | Unbounded requests | Body-size limits, rate limiting | |
+| **E**levation | Broken access control | RBAC, least privilege, tenant isolation | |
+
+## 5. Open risks / accepted risks
+_List, with owner and review date._
+
+## 6. References
+- OWASP ASVS L2 — see `docs/ASVS-L2.md`
