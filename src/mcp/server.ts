@@ -83,11 +83,16 @@ export async function runMcpServer(
   output: NodeJS.WritableStream = process.stdout,
   cwd: string                   = resolve(process.cwd()),
 ): Promise<void> {
+  const log = (msg: string) => process.stderr.write(`[half-mcp] ${msg}\n`);
+
+  log(`started cwd=${cwd}`);
   input.resume();
 
   for await (const req of decodeMessages(input)) {
     // Notifications have no id — fire and forget
     const isNotification = req.id === undefined || req.id === null;
+
+    log(`recv method=${req.method} id=${String(req.id)}`);
 
     switch (req.method) {
       case 'initialize':
