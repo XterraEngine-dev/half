@@ -38,6 +38,7 @@ export interface ScaffoldOptions {
   db: DbFlavor | null;
   docker: boolean;
   qa: boolean;
+  standards: boolean;
   dryRun: boolean;
   outputDir: string;
 }

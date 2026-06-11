@@ -9,7 +9,7 @@ const VALID_DBS:       DbFlavor[]       = ['postgres', 'mysql', 'sqlite'];
 export async function runNewCommand(args: ParsedArgs): Promise<void> {
   const name = args.subcommand ?? args.positionals[0];
   if (!name) {
-    console.error('Usage: half new <name> [--backend go|node|python] [--frontend nextjs|react-vite|vue|html5] [--db postgres|mysql|sqlite] [--docker] [--qa] [--dry-run]');
+    console.error('Usage: half new <name> [--backend go|node|python] [--frontend nextjs|react-vite|vue|html5] [--db postgres|mysql|sqlite] [--docker] [--qa] [--no-standards] [--dry-run]');
     process.exit(1);
   }
 
@@ -23,6 +23,7 @@ export async function runNewCommand(args: ParsedArgs): Promise<void> {
   const dbRaw       = args.flags['db'];
   const docker      = args.flags['docker'] === true;
   const qa          = args.flags['qa'] === true;
+  const standards   = args.flags['no-standards'] !== true;  // on by default
   const dryRun      = args.flags['dry-run'] === true;
 
   const backend = typeof backendRaw === 'string'
@@ -41,5 +42,5 @@ export async function runNewCommand(args: ParsedArgs): Promise<void> {
   if (frontendRaw && !frontend) { console.error(`Unknown frontend "${frontendRaw}". Valid: ${VALID_FRONTENDS.join(', ')}`); process.exit(1); }
   if (dbRaw       && !db)       { console.error(`Unknown db "${dbRaw}". Valid: ${VALID_DBS.join(', ')}`);                   process.exit(1); }
 
-  await scaffold({ name, backend, frontend, db, docker, qa, dryRun, outputDir: resolve(process.cwd()) });
+  await scaffold({ name, backend, frontend, db, docker, qa, standards, dryRun, outputDir: resolve(process.cwd()) });
 }

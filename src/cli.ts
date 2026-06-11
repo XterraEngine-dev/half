@@ -5,6 +5,8 @@ import { runPromptCommand } from './commands/prompt.js';
 import { runTaskCommand } from './commands/task.js';
 import { runWatchCommand } from './commands/watch.js';
 import { runMcpCommand } from './commands/mcp.js';
+import { runInitCommand } from './commands/init.js';
+import { runStandardsCommand } from './commands/standards.js';
 import { appendEvent } from './watch/event-log.js';
 import { resolve } from 'node:path';
 
@@ -23,6 +25,11 @@ Commands:
   half task pick [--assignee <name>] [--tag <tag>]
   half task progress <id> <0-100>
   half watch [--port 4747]
+  half standards check          run the engineering-standards gate (SAST, SCA, SBOM, ASVS, ...)
+  half standards seed           seed the atomic hardening backlog into .half/tasks.json
+  half standards init           add standards files to an existing project
+  half standards show           print the four pillars
+  half init mcp                 configure Claude Code MCP integration in current project
   half mcp                      start MCP stdio server (for Claude Code integration)
   half log <message> [--type agent.start|agent.stop|agent.log]
   half prompt [claude|raw]     print agent system prompt
@@ -56,9 +63,19 @@ async function main(): Promise<void> {
     return;
   }
 
+  if (args.command === 'standards') {
+    await runStandardsCommand(args);
+    return;
+  }
+
   if (args.command === 'prompt') {
     const target = (args.subcommand ?? 'generic') as 'claude' | 'generic' | 'raw';
     await runPromptCommand(target);
+    return;
+  }
+
+  if (args.command === 'init') {
+    await runInitCommand(args.subcommand);
     return;
   }
 

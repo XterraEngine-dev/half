@@ -9,6 +9,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) · Versioning: 
 
 ### Added
 
+- **`half init mcp`** (`src/commands/init.ts`). Auto-configures Claude Code MCP integration: writes `.mcp.json` with absolute node + half binary paths, and adds `half` to `enabledMcpjsonServers` in `~/.claude/settings.json`. Zero manual configuration after `npm install -g half`.
+
 - **`half mcp` — MCP stdio server** (`src/mcp/`). Implements JSON-RPC 2.0 over content-length-framed stdio (LSP-style) with zero runtime dependencies. Exposes 9 tools: `task_list`, `task_pick`, `task_done`, `task_block`, `task_add`, `task_show`, `task_assign`, `task_progress`, `log_event`. Claude Code discovers it automatically via `.mcp.json`.
 - **`.mcp.json` scaffolded** into every new project (`half new`). Points Claude Code at `half mcp` as a local MCP server.
 - **Unit tests** — `src/mcp/server.test.ts` (wire framing: encode/decode, unicode, split chunks, malformed JSON) and `src/mcp/tools.test.ts` (all 9 tools, error cases). 63 unit tests total, all passing.

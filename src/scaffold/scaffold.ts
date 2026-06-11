@@ -11,6 +11,7 @@ export async function scaffold(opts: ScaffoldOptions): Promise<void> {
   if (opts.db)     layers.push(`db/${opts.db}`);
   if (opts.docker) layers.push('docker');
   if (opts.qa)     layers.push('qa');
+  if (opts.standards) layers.push('standards');
 
   const tokens = buildTokens(opts.name, opts.backend ?? '', opts.frontend ?? '', opts.db ?? '');
 

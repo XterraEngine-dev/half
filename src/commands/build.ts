@@ -76,6 +76,7 @@ export async function runBuildCommand(): Promise<void> {
     ? await confirm('Add Docker Compose + Makefile?', true)
     : false;
   const qa = await confirm('Add Playwright E2E test suite?', false);
+  const standards = await confirm('Add engineering standards (CI gates, SAST, SBOM, ASVS)?', true);
 
   // ── Step 6: confirm ─────────────────────────
   writeln();
@@ -87,6 +88,7 @@ export async function runBuildCommand(): Promise<void> {
   summaryLine('database', db);
   summaryLine('docker',   docker);
   summaryLine('qa',       qa);
+  summaryLine('standards', standards);
   writeln(`  ${A.muted}${'─'.repeat(38)}${A.reset}\n`);
 
   const go = await confirm(`Scaffold "${name}" now?`, true);
@@ -108,6 +110,7 @@ export async function runBuildCommand(): Promise<void> {
     db,
     docker,
     qa,
+    standards,
     dryRun: false,
     outputDir: resolve(process.cwd()),
   });
@@ -118,6 +121,7 @@ export async function runBuildCommand(): Promise<void> {
   if (docker) writeln(`  ${A.orange}make up${A.reset}  ${A.muted}# start services${A.reset}`);
   if (backend === 'go') writeln(`  ${A.orange}go run .${A.reset}  ${A.muted}# run api${A.reset}`);
   if (frontend && frontend !== 'html5') writeln(`  ${A.orange}npm run dev${A.reset}  ${A.muted}# run frontend${A.reset}`);
+  if (standards) writeln(`  ${A.orange}half standards check${A.reset}  ${A.muted}# verify the gate${A.reset}`);
   writeln(`  ${A.orange}half watch${A.reset}  ${A.muted}# open harness viewer${A.reset}`);
   writeln();
 }
